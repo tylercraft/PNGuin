@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PNGuin — Snag high-res PNGs from any page</title>
+    <meta
+      name="description"
+      content="Right-click any page to capture a visible or full-page screenshot. Downloads instantly as a PNG. No signup, no fuss."
+    />
+    <link rel="canonical" href="https://pnguin.dev" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="16x16" href="icon16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="icon32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="icon180.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://pnguin.dev" />
+    <meta
+      property="og:title"
+      content="PNGuin — Snag high-res PNGs from any page"
+    />
+    <meta
+      property="og:description"
+      content="Right-click any page to capture a visible or full-page screenshot. Downloads instantly as a PNG. No signup, no fuss."
+    />
+    <meta
+      property="og:image"
+      content="https://pnguin.dev/menu-context-dark.png"
+    />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="PNGuin — Snag high-res PNGs from any page"
+    />
+    <meta
+      name="twitter:description"
+      content="Right-click any page to capture a visible or full-page screenshot. Downloads instantly as a PNG. No signup, no fuss."
+    />
+    <meta
+      name="twitter:image"
+      content="https://pnguin.dev/menu-context-dark.png"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --black: #0d0d0d;
+        --white: #f5f5f5;
+        --ice: #e8f4f8;
+        --blue: #2a7cb4;
+        --blue-dark: #1a4f73;
+        --teal: #3dbfbf;
+        --gray: #6b7280;
+        --border: #d1d5db;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--white);
+        color: var(--black);
+        line-height: 1.6;
+      }
+
+      /* ── Nav ── */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--black);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 40px;
+        height: 56px;
+      }
+      nav .wordmark {
+        color: var(--white);
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: -0.3px;
+      }
+      nav .wordmark span {
+        color: var(--teal);
+      }
+      nav .github {
+        font-size: 13px;
+        color: #aaa;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: color 0.15s;
+      }
+      nav .github:hover {
+        color: var(--teal);
+      }
+
+      /* ── Hero ── */
+      .hero {
+        background: var(--black);
+        color: var(--white);
+        text-align: center;
+        padding: 100px 40px 80px;
+      }
+      .hero .penguin {
+        font-size: 72px;
+        margin-bottom: 24px;
+        display: block;
+      }
+      .hero h1 {
+        font-size: clamp(36px, 6vw, 64px);
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        line-height: 1.1;
+        margin-bottom: 20px;
+      }
+      .hero h1 span {
+        color: var(--teal);
+      }
+      .hero p {
+        font-size: 18px;
+        color: #aaa;
+        max-width: 520px;
+        margin: 0 auto 36px;
+      }
+      .hero .cta {
+        display: inline-block;
+        background: var(--teal);
+        color: var(--black);
+        font-weight: 700;
+        font-size: 15px;
+        padding: 13px 28px;
+        border-radius: 8px;
+        text-decoration: none;
+      }
+
+      /* ── Section shell ── */
+      section {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 80px 40px;
+      }
+      section h2 {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        margin-bottom: 40px;
+      }
+      section h2 .label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--teal);
+        margin-bottom: 8px;
+      }
+
+      /* ── How it works ── */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 24px;
+      }
+      .step {
+        background: var(--ice);
+        border-radius: 12px;
+        padding: 28px 24px;
+      }
+      .step .num {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--blue);
+        margin-bottom: 12px;
+      }
+      .step h3 {
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .step p {
+        font-size: 14px;
+        color: var(--gray);
+      }
+
+      /* ── Menu preview ── */
+      .menu-demo {
+        background: var(--black);
+        border-radius: 16px;
+        padding: 60px 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 60px;
+        flex-wrap: wrap;
+      }
+      .menu-demo .desc {
+        color: var(--white);
+        max-width: 280px;
+      }
+      .menu-demo .desc h3 {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+      .menu-demo .desc p {
+        font-size: 14px;
+        color: #999;
+      }
+      .menu-screenshot {
+        max-width: 380px;
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      /* ── Features ── */
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 24px;
+      }
+      .feature {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 28px 24px;
+      }
+      .feature .icon {
+        font-size: 28px;
+        margin-bottom: 14px;
+      }
+      .feature h3 {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .feature p {
+        font-size: 14px;
+        color: var(--gray);
+      }
+
+      /* ── Footer ── */
+      footer {
+        background: var(--black);
+        color: #666;
+        text-align: center;
+        padding: 40px;
+        font-size: 13px;
+      }
+      footer strong {
+        color: var(--teal);
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="wordmark">PNG<span>uin</span></div>
+      <a
+        class="github"
+        href="https://github.com/tylercraft/PNGuin"
+        rel="noopener"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"
+          />
+        </svg>
+      </a>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero">
+      <span class="penguin">🐧</span>
+      <h1>Slide through pages.<br /><span>Snag high-res PNGs.</span></h1>
+      <p>
+        Right-click any page to capture just what's visible, or the entire thing
+        — no fuss, no setup.
+      </p>
+      <a class="cta" href="#">Add to Chrome — It's Free</a>
+    </div>
+
+    <!-- How it works -->
+    <section>
+      <h2><span class="label">How it works</span>Three clicks, one PNG.</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="num">Step 01</div>
+          <h3>Right-click anywhere</h3>
+          <p>
+            Open the context menu on any page. PNGuin lives right there — no
+            toolbar icon required.
+          </p>
+        </div>
+        <div class="step">
+          <div class="num">Step 02</div>
+          <h3>Pick your shot</h3>
+          <p>
+            Just the Tip grabs what's on screen. The Whole Iceberg captures the
+            entire scrollable page.
+          </p>
+        </div>
+        <div class="step">
+          <div class="num">Step 03</div>
+          <h3>PNG lands in Downloads</h3>
+          <p>
+            Your file arrives instantly, timestamped and named. No popups, no
+            clipboard drama.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu preview -->
+    <section style="padding-top: 0">
+      <div class="menu-demo">
+        <div class="desc">
+          <h3>Lives in the right-click menu</h3>
+          <p>
+            No extra UI to learn. PNGuin shows up exactly when you need it and
+            stays out of the way when you don't.
+          </p>
+        </div>
+        <img
+          class="menu-screenshot"
+          src="menu-context.png"
+          alt="PNGuin in the Chrome right-click menu"
+        />
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section>
+      <h2><span class="label">Features</span>Small tool, full power.</h2>
+      <div class="features">
+        <div class="feature">
+          <div class="icon">🖼️</div>
+          <h3>Visible capture</h3>
+          <p>Snaps exactly what's in the viewport — pixel-perfect, instant.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">📜</div>
+          <h3>Full-page capture</h3>
+          <p>
+            Expands to the full document height and captures every pixel in one
+            clean PNG.
+          </p>
+        </div>
+        <div class="feature">
+          <div class="icon">📁</div>
+          <h3>Auto-download</h3>
+          <p>
+            Files drop straight into your Downloads folder with a timestamp in
+            the name.
+          </p>
+        </div>
+        <div class="feature">
+          <div class="icon">🔒</div>
+          <h3>No data leaves your machine</h3>
+          <p>PNGuin never phones home. Captures happen locally, period.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">⚡</div>
+          <h3>Zero configuration</h3>
+          <p>
+            Install and go. No accounts, no settings screens, no onboarding
+            flow.
+          </p>
+        </div>
+        <div class="feature">
+          <div class="icon">🎨</div>
+          <h3>Lossless PNG output</h3>
+          <p>Always PNG, always full quality. No JPEG compression artifacts.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Made with 🐧 by <strong>PNGuin</strong> &nbsp;·&nbsp; No data collected
+      &nbsp;·&nbsp; Open source
+    </footer>
+  </body>
+</html>
